@@ -9,8 +9,8 @@ Raylib<br>
 https://github.com/raysan5/raylib/tree/master
 ## Usage
 The program will randomly allocate live cells. All you have to do is start the program, watch and enjoy!
-## Features
-Nothing special
+## Features or Notes
+I was not sure how to handle cells on the edge properly. So in this program, I just ignore the cells over the border while counting live cells.
 ## Reference
 https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 ## Author
