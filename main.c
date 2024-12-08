@@ -1,14 +1,18 @@
 #include <raylib.h>
 #include <string.h> /* memcpy */
 
-#define GRID_SIZE 9
-#define TILE_SIZE 8
+#define GRID_SIZE 5
+#define TILE_SIZE 4
 
-#define FIELD_WIDTH 200
-#define FIELD_HEIGHT 100
+/* This is the field area the program actually calculate */
+#define FIELD_WIDTH 500
+#define FIELD_HEIGHT 500
+/* This is the */
+#define VISIBLE_FIELD_WIDTH 350
+#define VISIBLE_FIELD_HEIGHT 190
 
-#define SCREEN_WIDTH FIELD_WIDTH * GRID_SIZE
-#define SCREEN_HEIGHT FIELD_HEIGHT * GRID_SIZE
+#define SCREEN_WIDTH VISIBLE_FIELD_WIDTH * GRID_SIZE
+#define SCREEN_HEIGHT VISIBLE_FIELD_HEIGHT * GRID_SIZE
 
 #define REFRESH_TIME 0.1
 
@@ -43,9 +47,9 @@ int main(void)
         timer += GetFrameTime();
         /* Update field output every REFRESH_TIME*/
         if (timer >= REFRESH_TIME){
-            /* Apply game of life rule for each cell, except the edge cells */
-            for (y = 1; y < FIELD_HEIGHT - 1; y++){
-                for (x = 1; x < FIELD_WIDTH - 1; x++){
+            /* Apply game of life rule for each cell*/
+            for (y = 0; y <= FIELD_HEIGHT; y++){
+                for (x = 0; x <= FIELD_WIDTH; x++){
                     apply_gol_rule(x, y,
                                    count_live_neighbour(x, y),
                                    field_output[y * FIELD_WIDTH +x]);
@@ -59,13 +63,10 @@ int main(void)
         BeginDrawing();
         ClearBackground(BLACK);
         /* Draw field output */
-        for (y = 0; y < FIELD_HEIGHT; y++){
-            for (x = 0; x < FIELD_WIDTH; x++){
-                if (field_output[y * FIELD_WIDTH + x]){
-                    DrawRectangle(x * GRID_SIZE, y * GRID_SIZE, TILE_SIZE, TILE_SIZE, GREEN);
-                }else{
-                    DrawRectangle(x * GRID_SIZE, y * GRID_SIZE, TILE_SIZE, TILE_SIZE, BLACK);
-                }
+        for (y = 0; y < VISIBLE_FIELD_HEIGHT; y++){
+            for (x = 0; x < VISIBLE_FIELD_WIDTH; x++){
+                Color color = (field_output[y * FIELD_WIDTH + x]) ? GREEN : BLACK;
+                DrawRectangle(x * GRID_SIZE, y * GRID_SIZE, TILE_SIZE, TILE_SIZE, color);
             }
         }
         EndDrawing();
@@ -78,10 +79,14 @@ int count_live_neighbour(int x, int y)
 {
     int c, h, w;
     
-    /* Repeat for each 8 neighbour */
     c = 0;
     for (h = y - 1; h <= y + 1; h++){
+        if (h < 0 || h >= FIELD_HEIGHT) /* Ignore (count as dead) over field boundary */
+            continue;
         for (w = x - 1; w <= x + 1; w++){
+            if (w < 0 || w >= FIELD_WIDTH)  /* Ignore (count as dead) over field boundary */
+                continue;
+            
             if (!(h == y && w == x)) 
                 c += (field_output[h * FIELD_WIDTH + w]) ? 1 : 0;
         }
