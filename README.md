@@ -1,7 +1,7 @@
 ## Overview
 Conwey's Game of Life in C. 
 ## Gameplay
-https://github.com/user-attachments/assets/2ea69f1a-de3e-4d11-b163-bb15f04fb7fe
+https://github.com/user-attachments/assets/6715181e-6d6c-48f8-87ca-b52db24d8aa8
 ## Requirement
 Windows 10<br>
 MSVC<br>
