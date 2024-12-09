@@ -7,7 +7,7 @@
 /* This is the field area the program actually calculate */
 #define FIELD_WIDTH 500
 #define FIELD_HEIGHT 500
-/* This is the */
+/* This is the field that user will see */
 #define VISIBLE_FIELD_WIDTH 350
 #define VISIBLE_FIELD_HEIGHT 190
 
@@ -65,8 +65,8 @@ int main(void)
         /* Draw field output */
         for (y = 0; y < VISIBLE_FIELD_HEIGHT; y++){
             for (x = 0; x < VISIBLE_FIELD_WIDTH; x++){
-                Color color = (field_output[y * FIELD_WIDTH + x]) ? GREEN : BLACK;
-                DrawRectangle(x * GRID_SIZE, y * GRID_SIZE, TILE_SIZE, TILE_SIZE, color);
+                if (field_output[y * FIELD_WIDTH + x])
+                    DrawRectangle(x * GRID_SIZE, y * GRID_SIZE, TILE_SIZE, TILE_SIZE, GREEN);
             }
         }
         EndDrawing();
